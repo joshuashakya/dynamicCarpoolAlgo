@@ -6,13 +6,13 @@
 
 #IncludeRegexTransform: 
 
-D:/Semester 2/carpool/Organization.h
+D:/Semester 2/dynamicCarpoolAlgo/Organization.h
 
-D:/Semester 2/carpool/Request.h
+D:/Semester 2/dynamicCarpoolAlgo/Request.h
 sstream
 -
 
-D:/Semester 2/carpool/main.cpp
+D:/Semester 2/dynamicCarpoolAlgo/main.cpp
 iostream
 -
 vector
@@ -20,7 +20,7 @@ vector
 fstream
 -
 Organization.h
-D:/Semester 2/carpool/Organization.h
+D:/Semester 2/dynamicCarpoolAlgo/Organization.h
 Request.h
-D:/Semester 2/carpool/Request.h
+D:/Semester 2/dynamicCarpoolAlgo/Request.h
 
