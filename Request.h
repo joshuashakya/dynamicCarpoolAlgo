@@ -20,10 +20,12 @@ public :
  }
  void findtw(){
         int x=0;
+        int y=0;
      stringstream ss(request);
      string tws;
      while (ss.good()) {
          string substr;
+         y++;
          getline(ss, substr, ',');
          if(substr.find(':') != std::string::npos){
 
@@ -40,12 +42,17 @@ public :
 
          }
      }
+     cout<<"The size is"<<y<<endl;
      for (size_t i = 0; i < time_windows.size(); i++)
          cout << time_windows[i] << endl;
 
 
 
  }
+
+ void validateRequestTw(){
+
+    }
 
 
 };
