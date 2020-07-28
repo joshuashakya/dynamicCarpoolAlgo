@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 #include <array>
+#include <map>
 #include <sstream>
 
 using namespace std;
@@ -18,8 +19,6 @@ using namespace std;
 vector<float> readfile(string FILENAME){
 
     vector <float> data;
-//    string FILENAME = "C:/Users/Ishan Gautam/Desktop/Carpool/data/odmatrix_data.txt";
-
     ifstream in(FILENAME);
 
     if(!in) {
@@ -58,8 +57,26 @@ vector<array<float, 2>> make_pair(vector<float> pre_data){
     return od_data;
 }
 
+void ODMatrix::loadDict(){
+    dict.insert(pair<string, int>("montbeliard", 0));
+    dict.insert(pair<string, int>("hericourt", 1));
+    dict.insert(pair<string, int>("fontaine", 2));
+    dict.insert(pair<string, int>("dannemarie", 3));
+    dict.insert(pair<string, int>("altkirch", 4));
+    dict.insert(pair<string, int>("mulhouse", 5));
+    dict.insert(pair<string, int>("basel", 6));
+}
+
+map<string, int> ODMatrix::getDict(){
+    return dict;
+
+}
+vector<vector<array <float ,2>>> ODMatrix::getOD(){
+    return matrix;
+}
 
 ODMatrix::ODMatrix() {
+    loadDict();
 
     string fname = "../odmatrix_data.txt";
     vector <float> pre_data = readfile(fname);
@@ -80,17 +97,17 @@ ODMatrix::ODMatrix() {
     for (int i=0; i<matrix.size(); ++i){
         for(int j=0; j<matrix.size(); ++j){
 //            vector<array<int *, 2>> row;
-            index = i*3 + j;
+            index = i*size + j;
             matrix[i].push_back(od_data[index]);
         }
     }
 
-    for (int i=0; i<matrix.size(); ++i){
-        for(int j=0; j<matrix[i].size(); ++j){
-            cout<<"the matrix data is ["<<matrix[i][j].at(0)<<", "<<matrix[i][j].at(1)<<"]";
-        }
-        cout<<endl;
-    }
+//    for (int i=0; i<matrix.size(); ++i){
+//        for(int j=0; j<matrix[i].size(); ++j){
+//            cout<<"the matrix data is ["<<matrix[i][j].at(0)<<", "<<matrix[i][j].at(1)<<"]";
+//        }
+//        cout<<endl;
+//    }
 
 
 

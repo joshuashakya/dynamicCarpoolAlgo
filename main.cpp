@@ -6,6 +6,8 @@
 #include "ODMatrix.h"
 using namespace std;
 int main() {
+    ODMatrix od;
+
     vector<Organization> orgs_list;
     std::vector<Request> request_demand_list;
 
@@ -25,10 +27,26 @@ int main() {
         request_demand_list.push_back(Request(request_demand));
     }
     in.close();
+
+//    request_demand_list[0].validateRequestTw(od);
+
     for(Request i : request_demand_list){
-        i.findtw();
+//        i.v;
+        cout<<"before validation => "<<i.validated<<endl;
+//        _sleep(1);
+        i.validateRequestTw(od);
+        cout<<"after validation => "<<i.validated<<endl;
         cout<<endl;
     }
+
+//    for(Request i : request_demand_list){
+////        i.v;
+////        cout<<"before validation => "<<i.validated<<endl;
+////        _sleep(1);
+//        i.validateRequestTw(od);
+//        cout<<"after validation => "<<i.validated<<endl;
+//        cout<<endl;
+//    }
 
 //    ODMatrix od;
 

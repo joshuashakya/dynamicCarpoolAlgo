@@ -3,8 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/carpool.dir/main.cpp.obj"
   "carpool.exe"
   "carpool.exe.manifest"
+  "carpool.lib"
   "carpool.pdb"
-  "libcarpool.dll.a"
 )
 
 # Per-language clean rules from dependency scanning.
