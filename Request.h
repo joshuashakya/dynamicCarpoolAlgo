@@ -11,6 +11,7 @@
 #include <vector>
 #include <map>
 #include <array>
+#include "Role.h"
 
 using namespace std;
 
@@ -19,11 +20,13 @@ class Request {
 public :
     string request;
     bool validated;
+    Role r;
     vector<string> time_windows;
     map<string, int> dict;
     Request(string request_string){
         request=request_string;
         validated = false;
+        r.set_role("");
 
     }
     void printrequest(){
@@ -51,6 +54,7 @@ public :
           }
          }
      }
+
      cout<<"The size is"<<y<<endl;
      for (size_t i = 0; i < time_windows.size(); i++)
          cout << time_windows[i] << endl;
@@ -98,6 +102,11 @@ void validateRequestTw(ODMatrix od){
                 }
             }
          }
+         r.set_role(requestSub[requestSub.size()-4]);
+         cout<<endl<<"role is:";
+         r.print_role();
+         cout<<endl;
+
 
         map<string, int> dict = od.getDict();
         vector<vector<array <float ,2>>> matrix = od.getOD();

@@ -1,4 +1,4 @@
-0,montbeliard,8:05,8:10,2,0,fontaine,8:40,8:45,0,-1,mulhouse,9:40,10:15,0,-1,Mdr,1,>1,1,13:15,13:45
+0,montbeliard,8:05,8:10,2,0,fontaine,8:40,8:45,0,-1,mulhouse,9:40,10:15,0,-1,Mdr,1,>1,1
 1,hericourt,8:20,8:30,2,0,altkirch,9:15,9:20,0,-2,Opa,0,>1,0
 2,dannemarie,8:55,9:00,3,0,basel,10:20,11:00,0,-3,Mdr,1,0,0
-3,mulhouse,13:15,13:20,1,0,montbeliard,14:00,14:30,0,-1,Odr,1,0,0
+3,mulhouse,13:15,13:20,1,0,montbeliard,14:30,14:45,0,-1,Odr,1,0,0

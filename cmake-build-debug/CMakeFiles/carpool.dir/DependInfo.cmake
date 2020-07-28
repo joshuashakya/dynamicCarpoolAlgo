@@ -7,7 +7,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "D:/dynamicCarpoolAlgo/ODMatrix.cpp" "D:/dynamicCarpoolAlgo/cmake-build-debug/CMakeFiles/carpool.dir/ODMatrix.cpp.obj"
   "D:/dynamicCarpoolAlgo/main.cpp" "D:/dynamicCarpoolAlgo/cmake-build-debug/CMakeFiles/carpool.dir/main.cpp.obj"
   )
-set(CMAKE_CXX_COMPILER_ID "MSVC")
+set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
