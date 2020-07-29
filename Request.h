@@ -27,13 +27,16 @@ public :
     vector<Position> via;
     bool return_trip;
     vector<string> time_windows;
+    bool start_as_driver;
+
     map<string, int> dict;
     Request(string request_string){
         request=request_string;
         validated = false;
         r.set_role("");
-        start.intialize_pos("","","");
-        dest.intialize_pos("","","");
+        start.intialize_pos("","","",0,0);
+        dest.intialize_pos("","","",0,0);
+        start_as_driver=false;
 
     }
     void printrequest(){
@@ -109,7 +112,7 @@ void validateRequestTw(ODMatrix od){
                 }
             }
          }
-         start.intialize_pos(requestSub[1],requestSub[2],requestSub[3]);
+         start.intialize_pos(requestSub[1],requestSub[2],requestSub[3],stoi(requestSub[4]),stoi(requestSub[5]));
          start.print_pos();
 
          if(requestSub[requestSub.size()-1]=="1"){
@@ -119,15 +122,23 @@ void validateRequestTw(ODMatrix od){
          }
          if(return_trip==false) {
              r.set_role(requestSub[requestSub.size() - 4]);
-             dest.intialize_pos(requestSub[requestSub.size() - 9],requestSub[requestSub.size() - 8],requestSub[requestSub.size() - 7]);
+             if(requestSub[requestSub.size() - 3]=="1"){
+                 start_as_driver=true;
+             }
+             dest.intialize_pos(requestSub[requestSub.size() - 9],requestSub[requestSub.size() - 8],requestSub[requestSub.size() - 7],stoi(requestSub[requestSub.size() - 6]),stoi((requestSub[requestSub.size() - 5])));
          }else{
              r.set_role(requestSub[requestSub.size()-8]);
-             dest.intialize_pos(requestSub[requestSub.size() - 13],requestSub[requestSub.size() - 12],requestSub[requestSub.size() - 11]);
+             if(requestSub[requestSub.size() - 7]=="1"){
+                 start_as_driver=true;
+             }
+
+             dest.intialize_pos(requestSub[requestSub.size() - 13],requestSub[requestSub.size() - 12],requestSub[requestSub.size() - 11],stoi(requestSub[requestSub.size() - 10]),stoi(requestSub[requestSub.size() - 9]));
          }
          dest.print_pos();
+    cout<<"start as a driver isssssssss:"+to_string(start_as_driver);
          for(int i=6;i<requestSub.size()-9;i=i+5){
              if(requestSub[i]!=dest.get_position_name()){
-                 via.push_back(Position(requestSub[i],requestSub[i+1],requestSub[i+2]));
+                 via.push_back(Position(requestSub[i],requestSub[i+1],requestSub[i+2],stoi(requestSub[i+3]),stoi(requestSub[i+4])));
              }
 
          }

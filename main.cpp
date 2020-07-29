@@ -20,6 +20,9 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
 //        cout<<"before validation => "<<i.validated<<endl;
 ////        _sleep(1);
         i.validateRequestTw(od);
+        if(i.validated==true && i.start_as_driver==true){
+            cout<<"here";
+        }
 //        cout<<"after validation => "<<i.validated<<endl;
 //        cout<<endl;
         i.r.print_role();
