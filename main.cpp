@@ -5,11 +5,33 @@
 #include "Request.h"
 #include "ODMatrix.h"
 using namespace std;
+vector<Organization> orgs_list;
+std::vector<Request> request_demand_list;
+
+void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
+
+
+    if(o1.is_empty()== 0){
+        cout<<"weeeeeeeeeee areeeeeeee hereeeeeeeeeeeee";
+    }
+
+    for(Request i : request_demand_list){
+//        i.v;
+//        cout<<"before validation => "<<i.validated<<endl;
+////        _sleep(1);
+        i.validateRequestTw(od);
+//        cout<<"after validation => "<<i.validated<<endl;
+//        cout<<endl;
+        i.r.print_role();
+    }
+
+
+
+}
 int main() {
     ODMatrix od;
 
-    vector<Organization> orgs_list;
-    std::vector<Request> request_demand_list;
+
 
     string FILENAME = "../requests.txt";
 
@@ -27,26 +49,10 @@ int main() {
         request_demand_list.push_back(Request(request_demand));
     }
     in.close();
+    Organization o1;
+    CarpoolAlgorithm(request_demand_list, o1, od);
 
 //    request_demand_list[0].validateRequestTw(od);
-
-    for(Request i : request_demand_list){
-//        i.v;
-        cout<<"before validation => "<<i.validated<<endl;
-//        _sleep(1);
-        i.validateRequestTw(od);
-        cout<<"after validation => "<<i.validated<<endl;
-        cout<<endl;
-        i.r.print_role();
-    }
-
-    for(Request i : request_demand_list){
-        cout<<i.validated;
-
-//        if(i.validated== false){
-//            cout<<"here";
-//        }
-    }
 
 //    for(Request i : request_demand_list){
 ////        i.v;
@@ -62,8 +68,4 @@ int main() {
     return 0;
 }
 
-void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
 
-
-
-}

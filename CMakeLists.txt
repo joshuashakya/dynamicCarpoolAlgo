@@ -3,4 +3,4 @@ project(carpool)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(carpool main.cpp ODMatrix.cpp ODMatrix.h)
+add_executable(carpool main.cpp ODMatrix.cpp ODMatrix.h Itinerary.cpp Itinerary.h)
