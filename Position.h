@@ -28,6 +28,9 @@ public:
     void print_pos(){
         cout<<"the position is: "+name+" "+time_at_least+" "+time_at_most;
     }
+    string get_position_name(){
+        return name;
+    }
 
 };
 

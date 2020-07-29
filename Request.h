@@ -24,6 +24,7 @@ public :
     Role r;
     Position start;
     Position dest;
+    vector<Position> via;
     bool return_trip;
     vector<string> time_windows;
     map<string, int> dict;
@@ -124,6 +125,15 @@ void validateRequestTw(ODMatrix od){
              dest.intialize_pos(requestSub[requestSub.size() - 13],requestSub[requestSub.size() - 12],requestSub[requestSub.size() - 11]);
          }
          dest.print_pos();
+         for(int i=6;i<requestSub.size()-9;i=i+5){
+             if(requestSub[i]!=dest.get_position_name()){
+                 via.push_back(Position(requestSub[i],requestSub[i+1],requestSub[i+2]));
+             }
+
+         }
+         for(int i=0;i<via.size();i++){
+             via[i].print_pos();
+         }
 //         cout<<endl<<"role is:";
 //         r.print_role();
 //         cout<<endl;
