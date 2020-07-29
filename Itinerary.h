@@ -10,6 +10,7 @@
 #include "ItinPoints.h"
 
 class Itinerary {
+public:
     std::vector<ItinPoints> itinpts;
     int satisfied_requests;
 
@@ -18,6 +19,13 @@ class Itinerary {
     }
     void addPoint(ItinPoints ip){
         itinpts.push_back(ip);
+    }
+    void print_itin(){
+        for(int i=0;i<itinpts.size();i++){
+            itinpts[i].print_itpts();
+        }
+        cout<<endl;
+
     }
 
 

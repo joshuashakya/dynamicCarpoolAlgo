@@ -12,7 +12,7 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
 
 
     if(o1.is_empty()== 0){
-        cout<<"weeeeeeeeeee areeeeeeee hereeeeeeeeeeeee";
+//        cout<<"weeeeeeeeeee areeeeeeee hereeeeeeeeeeeee";
     }
 
     for(Request i : request_demand_list){
@@ -21,11 +21,17 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
 ////        _sleep(1);
         i.validateRequestTw(od);
         if(i.validated==true && i.start_as_driver==true){
-            cout<<"here";
+            ItinPoints ip_start(i.start,10,0);
+            ItinPoints ip_dest(i.dest,2,0);
+            Itinerary new_it;
+            new_it.addPoint(ip_start);
+            new_it.addPoint(ip_dest);
+            new_it.print_itin();
+
         }
 //        cout<<"after validation => "<<i.validated<<endl;
 //        cout<<endl;
-        i.r.print_role();
+//        i.r.print_role();
     }
 
 

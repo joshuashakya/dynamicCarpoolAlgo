@@ -81,7 +81,7 @@ ODMatrix::ODMatrix() {
     string fname = "../odmatrix_data.txt";
     vector <float> pre_data = readfile(fname);
 
-    cout<<"size of predata is "<<pre_data.size()<<endl;
+//    cout<<"size of predata is "<<pre_data.size()<<endl;
 
     vector<array<float, 2>> od_data = make_pair(pre_data);
 

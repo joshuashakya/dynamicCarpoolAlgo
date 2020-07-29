@@ -9,14 +9,25 @@
 
 using namespace  std;
 class ItinPoints {
+public:
     Position pos;
     int av_seats;
     int req_no;
     ItinPoints();
-    void set_new_point(Position p,int as, int pickup,int deliv, int r_no){
+    ItinPoints(Position p,int as, int r_no){
         pos=p;
         av_seats=as;
         req_no=r_no;
+
+    }
+    void set_new_point(Position p,int as, int r_no){
+        pos=p;
+        av_seats=as;
+        req_no=r_no;
+    }
+    void print_itpts(){
+        pos.print_pos();
+        cout<<","+to_string(av_seats)+","+to_string(req_no);
     }
 
 

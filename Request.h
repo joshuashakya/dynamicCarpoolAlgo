@@ -40,7 +40,7 @@ public :
 
     }
     void printrequest(){
-        cout<<request<<endl;
+//        cout<<request<<endl;
  }
  void findtw(){
         int x=0;
@@ -113,7 +113,7 @@ void validateRequestTw(ODMatrix od){
             }
          }
          start.intialize_pos(requestSub[1],requestSub[2],requestSub[3],stoi(requestSub[4]),stoi(requestSub[5]));
-         start.print_pos();
+//         start.print_pos();
 
          if(requestSub[requestSub.size()-1]=="1"){
              return_trip=true;
@@ -134,8 +134,8 @@ void validateRequestTw(ODMatrix od){
 
              dest.intialize_pos(requestSub[requestSub.size() - 13],requestSub[requestSub.size() - 12],requestSub[requestSub.size() - 11],stoi(requestSub[requestSub.size() - 10]),stoi(requestSub[requestSub.size() - 9]));
          }
-         dest.print_pos();
-    cout<<"start as a driver isssssssss:"+to_string(start_as_driver);
+//         dest.print_pos();
+//    cout<<"start as a driver isssssssss:"+to_string(start_as_driver);
          for(int i=6;i<requestSub.size()-9;i=i+5){
              if(requestSub[i]!=dest.get_position_name()){
                  via.push_back(Position(requestSub[i],requestSub[i+1],requestSub[i+2],stoi(requestSub[i+3]),stoi(requestSub[i+4])));
@@ -143,7 +143,7 @@ void validateRequestTw(ODMatrix od){
 
          }
          for(int i=0;i<via.size();i++){
-             via[i].print_pos();
+//             via[i].print_pos();
          }
 //         cout<<endl<<"role is:";
 //         r.print_role();
@@ -188,10 +188,10 @@ void validateRequestTw(ODMatrix od){
 
                     if(min >= matrix[mati][matj].at(0) && max >= matrix[mati][matj].at(0)){
                         validated = true;
-                        cout<<"its valid"<<endl;
+//                        cout<<"its valid"<<endl;
                     }else{
                         validated = false;
-                        cout<<"its not valid"<<endl;
+//                        cout<<"its not valid"<<endl;
                     }
 
 //                    cout<<"time difference between these places as given are (in minutes) min => "<<
