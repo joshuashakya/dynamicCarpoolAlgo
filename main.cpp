@@ -37,6 +37,15 @@ int main() {
         i.validateRequestTw(od);
         cout<<"after validation => "<<i.validated<<endl;
         cout<<endl;
+        i.r.print_role();
+    }
+
+    for(Request i : request_demand_list){
+        cout<<i.validated;
+
+//        if(i.validated== false){
+//            cout<<"here";
+//        }
     }
 
 //    for(Request i : request_demand_list){
@@ -51,4 +60,10 @@ int main() {
 //    ODMatrix od;
 
     return 0;
+}
+
+void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
+
+
+
 }
