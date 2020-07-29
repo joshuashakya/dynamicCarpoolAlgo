@@ -12,6 +12,7 @@
 #include <map>
 #include <array>
 #include "Role.h"
+#include "Position.h"
 
 using namespace std;
 
@@ -21,12 +22,17 @@ public :
     string request;
     bool validated;
     Role r;
+    Position start;
+    Position dest;
+    bool return_trip;
     vector<string> time_windows;
     map<string, int> dict;
     Request(string request_string){
         request=request_string;
         validated = false;
         r.set_role("");
+        start.intialize_pos("","","");
+        dest.intialize_pos("","","");
 
     }
     void printrequest(){
@@ -102,10 +108,25 @@ void validateRequestTw(ODMatrix od){
                 }
             }
          }
-         r.set_role(requestSub[requestSub.size()-4]);
-         cout<<endl<<"role is:";
-         r.print_role();
-         cout<<endl;
+         start.intialize_pos(requestSub[1],requestSub[2],requestSub[3]);
+         start.print_pos();
+
+         if(requestSub[requestSub.size()-1]=="1"){
+             return_trip=true;
+         }else{
+             return_trip=false;
+         }
+         if(return_trip==false) {
+             r.set_role(requestSub[requestSub.size() - 4]);
+             dest.intialize_pos(requestSub[requestSub.size() - 9],requestSub[requestSub.size() - 8],requestSub[requestSub.size() - 7]);
+         }else{
+             r.set_role(requestSub[requestSub.size()-8]);
+             dest.intialize_pos(requestSub[requestSub.size() - 13],requestSub[requestSub.size() - 12],requestSub[requestSub.size() - 11]);
+         }
+         dest.print_pos();
+//         cout<<endl<<"role is:";
+//         r.print_role();
+//         cout<<endl;
 
 
         map<string, int> dict = od.getDict();
