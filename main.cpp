@@ -21,10 +21,16 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
 ////        _sleep(1);
         i.validateRequestTw(od);
         if(i.validated==true && i.start_as_driver==true){
-            ItinPoints ip_start(i.start,10,0);
-            ItinPoints ip_dest(i.dest,2,0);
             Itinerary new_it;
+            ItinPoints ip_start(i.start,10,0);
             new_it.addPoint(ip_start);
+            for(int j=0;j<i.via.size();j++){
+                new_it.addPoint(ItinPoints(i.via[j],10,0));
+
+            }
+            ItinPoints ip_dest(i.dest,2,0);
+
+
             new_it.addPoint(ip_dest);
             new_it.print_itin();
 
