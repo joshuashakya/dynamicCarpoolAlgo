@@ -14,11 +14,17 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
     if(o1.is_empty()== 0){
 //        cout<<"weeeeeeeeeee areeeeeeee hereeeeeeeeeeeee";
     }
+    vector<Request> request_demand_only;
+    for(Request i : request_demand_list) {
+        i.validateRequestTw(od);
+        if(i.validated==true && i.start_as_driver==0){
+            request_demand_only.push_back(i);
+        }
+
+    }
 
     for(Request i : request_demand_list){
-//        i.v;
-//        cout<<"before validation => "<<i.validated<<endl;
-////        _sleep(1);
+
         i.validateRequestTw(od);
         if(i.validated==true && i.start_as_driver==true){
             Itinerary new_it;
@@ -29,10 +35,20 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
 
             }
             ItinPoints ip_dest(i.dest,2,0);
-
-
             new_it.addPoint(ip_dest);
             new_it.print_itin();
+            cout<<"hello"<<endl;
+
+
+            for(Request k: request_demand_only) {
+//                k.printrequest();
+                if(new_it.satisfies(k)){
+                    Itinerary new_it2(new_it);
+
+
+                }
+
+            }
 
         }
 //        cout<<"after validation => "<<i.validated<<endl;

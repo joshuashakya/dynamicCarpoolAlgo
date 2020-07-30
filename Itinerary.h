@@ -8,6 +8,7 @@
 
 #include <vector>
 #include "ItinPoints.h"
+#include "Request.h"
 
 class Itinerary {
 public:
@@ -17,6 +18,11 @@ public:
     Itinerary(){
 
     }
+    Itinerary(Itinerary const &it_copy){
+        for(int i=0;i<it_copy.itinpts.size();i++){
+            itinpts.push_back(it_copy.itinpts[i]);
+        }
+    }
     void addPoint(ItinPoints ip){
         itinpts.push_back(ip);
     }
@@ -25,6 +31,9 @@ public:
             itinpts[i].print_itpts();
         }
         cout<<endl;
+
+    }
+    bool satisfies(Request r){
 
     }
 

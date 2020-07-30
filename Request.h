@@ -40,7 +40,7 @@ public :
 
     }
     void printrequest(){
-//        cout<<request<<endl;
+        cout<<request<<endl;
  }
  void findtw(){
         int x=0;
