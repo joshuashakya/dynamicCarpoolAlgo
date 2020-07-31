@@ -178,7 +178,8 @@ void validateRequestTw(ODMatrix od){
                     p2min = getTime(t2min);
                     p2max = getTime(t2max);
                     float min = p2min - p1min;
-                    float max = p2max - p1min;
+                    float max = p2max - p1max;
+//                    cout<<"min and max are "<<min<<",,"<<max<<endl;
 
 
 

@@ -5,6 +5,7 @@
 #ifndef CARPOOL_ITINPOINTS_H
 #define CARPOOL_ITINPOINTS_H
 #include <iostream>
+#include <sstream>
 #include "Position.h"
 
 using namespace  std;
@@ -13,7 +14,9 @@ public:
     Position pos;
     int av_seats;
     int req_no;
-    ItinPoints();
+    ItinPoints(){
+
+    }
     ItinPoints(Position p,int as, int r_no){
         pos=p;
         av_seats=as;
