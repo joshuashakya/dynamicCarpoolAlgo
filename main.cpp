@@ -45,9 +45,52 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
                 k.printrequest();
 
                 if(new_it.satisfies(k, od)){
-//                    Itinerary new_it2(new_it);
-                    cout<<"Satisfied"<<endl;
+                    Itinerary new_it2;
 
+                    map<string, int> dict = od.getDict();
+                    //                    cout<<"Satisfied"<<endl;
+                    int kStart = dict.at(k.start.name);
+                    int kDest = dict.at(k.dest.name);
+//                    int count = (int)new_it.itinpts.size() + 2;
+                    bool added = false;
+                    int j = 0;
+//                    for(int j=0; j<new_it.itinpts.size(); j++){
+                    while(!added){
+
+                        int p0 = dict.at(new_it.itinpts[j].pos.name);
+                        int p1 = 0;
+                        if(j+1 == new_it.itinpts.size()){
+                            new_it2.addPoint(new_it.itinpts[j+1]);
+                            added = true;
+                        }
+                        else{
+                             p1 = dict.at(new_it.itinpts[j+1].pos.name);
+                        }
+
+                        if(kStart >= p0 && kStart <= p1){
+//                            ItinPoints ip0(k.start,10,0);
+                            new_it2.addPoint(new_it.itinpts[j]);
+                            ItinPoints ip0(k.start,10,0);
+                            new_it2.addPoint(ip0);
+
+                            if(kDest >= p0 && kDest <= p1){
+                                ItinPoints ip1(k.dest,10,0);
+                                new_it2.addPoint(ip1);
+                            }
+
+                            j++;
+                            new_it2.addPoint(new_it.itinpts[j]);
+                            j++;
+
+                        }
+                        else{
+                            if(!added){
+
+                                new_it2.addPoint(new_it.itinpts[j]);
+                                j++;
+                            }
+                        }
+                    }
 
                 }
                 else{

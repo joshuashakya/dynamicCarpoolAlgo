@@ -69,7 +69,8 @@ public:
         int itinSP = dict.at(itinpts.front().pos.name);
         int itinDP = dict.at(itinpts.back().pos.name);
 
-        if(sP >= itinSP && dP <= itinDP)
+        if(sP >= itinSP && dP <= itinDP){
+
             float itinST = getTime(itinpts.front().pos.time_at_least);
             float itinDT = getTime(itinpts.back().pos.time_at_least);
             float timeST = getTime(r.start.time_at_least);
@@ -77,6 +78,7 @@ public:
 
             if(timeST >= itinST && timeDT <= itinDT)
                 return true;
+        }
 
         return false;
 
