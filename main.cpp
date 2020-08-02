@@ -1,12 +1,24 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <algorithm>
+
 #include "Organization.h"
 #include "Request.h"
 #include "ODMatrix.h"
 using namespace std;
 vector<Organization> orgs_list;
 std::vector<Request> request_demand_list;
+
+vector<ItinPoints> sortAscending(vector<ItinPoints> itin,  map<string, int> dict){
+    sort( itin.begin( ), itin.end( ), [dict]( auto& lhs, auto& rhs )
+    {
+        return  dict.at(lhs.pos.name)< dict.at(rhs.pos.name);
+    });
+
+    return itin;
+}
+
 
 void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
 
@@ -45,52 +57,41 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
                 k.printrequest();
 
                 if(new_it.satisfies(k, od)){
-                    Itinerary new_it2;
-
                     map<string, int> dict = od.getDict();
-                    //                    cout<<"Satisfied"<<endl;
-                    int kStart = dict.at(k.start.name);
-                    int kDest = dict.at(k.dest.name);
-//                    int count = (int)new_it.itinpts.size() + 2;
-                    bool added = false;
-                    int j = 0;
-//                    for(int j=0; j<new_it.itinpts.size(); j++){
-                    while(!added){
 
-                        int p0 = dict.at(new_it.itinpts[j].pos.name);
-                        int p1 = 0;
-                        if(j+1 == new_it.itinpts.size()){
-                            new_it2.addPoint(new_it.itinpts[j+1]);
-                            added = true;
-                        }
-                        else{
-                             p1 = dict.at(new_it.itinpts[j+1].pos.name);
-                        }
+                    vector<ItinPoints> itin;
 
-                        if(kStart >= p0 && kStart <= p1){
-//                            ItinPoints ip0(k.start,10,0);
-                            new_it2.addPoint(new_it.itinpts[j]);
-                            ItinPoints ip0(k.start,10,0);
-                            new_it2.addPoint(ip0);
 
-                            if(kDest >= p0 && kDest <= p1){
-                                ItinPoints ip1(k.dest,10,0);
-                                new_it2.addPoint(ip1);
-                            }
-
-                            j++;
-                            new_it2.addPoint(new_it.itinpts[j]);
-                            j++;
-
-                        }
-                        else{
-                            if(!added){
-
-                                new_it2.addPoint(new_it.itinpts[j]);
-                                j++;
-                            }
-                        }
+                    for(int j=0; j< new_it.itinpts.size(); j++){
+                        itin.push_back(new_it.itinpts[j]);
                     }
+                    ItinPoints ip0(k.start, 10, 0);
+                    itin.push_back(ip0);
+
+                    ItinPoints ip1(k.dest, 10, 0);
+                    itin.push_back(ip1);
+
+                    cout<<"before sort "<<endl;
+
+                    for(auto & x : itin){
+                        cout<<x.pos.name<<endl;
+                    }
+
+                    itin = sortAscending(itin, dict);
+
+                    cout<<"after sort"<<endl;
+
+                    Itinerary new_it2;
+                    for(auto & x : itin){
+                        new_it2.addPoint(x);
+                        cout<<x.pos.name<<endl;
+                    }
+
+                    cout<<"new itin"<<endl;\
+                    new_it2.print_itin();
+
+
+
 
                 }
                 else{
