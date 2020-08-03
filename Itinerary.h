@@ -108,6 +108,57 @@ public:
         }
     }
 
+    string converMinToTime(float timeInMin){
+        int hr = (int) timeInMin/60;
+        int min = (int) timeInMin%60;
+        string time = to_string(hr)+":"+to_string(min);
+
+        return time;
+    }
+
+    void validateTimeWindow(map<string, int> dict, ODMatrix od) {
+        vector<vector<array <float ,2>>> matrix = od.getOD();
+
+        for(int i=0; i<itinpts.size(); i++){
+            if(i+1 <  itinpts.size()){
+                int i0 = dict.at(itinpts[i].pos.name);
+                int j0 = dict.at(itinpts[i+1].pos.name);
+
+                string t0min = itinpts[i].pos.time_at_least;
+                string t0max = itinpts[i].pos.time_at_most;
+                string t1min = itinpts[i+1].pos.time_at_least;
+                string t1max = itinpts[i+1].pos.time_at_most;
+
+                float p0min = getTime(t0min);
+                float p0max = getTime(t0max);
+                float p1min = getTime(t1min);
+                float p1max = getTime(t1max);
+
+
+                if((p0max + matrix[i0][j0].at(0)) >= p1max){
+                    p0max = p1max - matrix[i0][j0].at(0);
+                    itinpts[i].pos.time_at_most = converMinToTime(p0max);
+                }
+
+                if((p0min + matrix[i0][j0].at(0)) >= p1min){
+                    p1min = p0min + matrix[i0][j0].at(0);
+                    itinpts[i+1].pos.time_at_least = converMinToTime(p1min);
+
+                    p0max = p1max - matrix[i0][j0].at(0);
+                    itinpts[i].pos.time_at_most = converMinToTime(p0max);
+                }
+                else if((p0max + matrix[i0][i0].at(0)) <= p0max){
+                    p0max = p0max - matrix[i0][i0].at(0);
+                    itinpts[i].pos.time_at_most = converMinToTime(p0max);
+
+                    p0min = p0min + matrix[i0][i0].at(0);
+                    itinpts[i].pos.time_at_least = converMinToTime(p0min);
+                }
+
+            }
+        }
+    }
+
     bool combine(Itinerary it,vector<Request> request_demand_list){
         bool can_change_veh=false;
         for(Request k:request_demand_list){

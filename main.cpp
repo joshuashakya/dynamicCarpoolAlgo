@@ -26,6 +26,8 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
     if(o1.is_empty()== 0){
 //        cout<<"weeeeeeeeeee areeeeeeee hereeeeeeeeeeeee";
     }
+
+    map<string, int> dict = od.getDict();
     vector<Itinerary > all_its;
     vector<Request> request_demand_only;
     vector<Request> request_demand_validated;
@@ -96,7 +98,9 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
 
                 if(new_it.satisfies(k, od)){
 //                    cout<<"hello";
-                    map<string, int> dict = od.getDict();
+
+
+//                    map<string, int> dict = od.getDict();
 
                     vector<ItinPoints> itin;
 
@@ -169,6 +173,10 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
 //
 //        }
 //    }
+
+    for(int i=0; i<all_its.size(); i++){
+        all_its[i].validateTimeWindow(dict, od);
+    }
 
       for(int i=0; i<all_its.size(); i++){
           for(int j=0; j<all_its.size();j++){
