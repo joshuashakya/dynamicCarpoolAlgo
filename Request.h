@@ -20,6 +20,7 @@ using namespace std;
 class Request {
 public :
     string request;
+    int request_no;
     bool validated;
     Role r;
     Position start;
@@ -28,6 +29,8 @@ public :
     bool return_trip;
     vector<string> time_windows;
     bool start_as_driver;
+    int capacity;
+    string modality_report;
 
     map<string, int> dict;
     Request(string request_string){
@@ -37,6 +40,9 @@ public :
         start.intialize_pos("","","",0,0);
         dest.intialize_pos("","","",0,0);
         start_as_driver=false;
+        capacity=0;
+        modality_report="";
+        request_no=0;
 
     }
     void printrequest(){
@@ -112,8 +118,10 @@ void validateRequestTw(ODMatrix od){
                 }
             }
          }
-         start.intialize_pos(requestSub[1],requestSub[2],requestSub[3],stoi(requestSub[4]),stoi(requestSub[5]));
+         request_no=stoi(requestSub[0]);
+         start.intialize_pos(requestSub[2],requestSub[3],requestSub[4],stoi(requestSub[5]),stoi(requestSub[6]));
 //         start.print_pos();
+        capacity=stoi(requestSub[1]);
 
          if(requestSub[requestSub.size()-1]=="1"){
              return_trip=true;
@@ -122,12 +130,16 @@ void validateRequestTw(ODMatrix od){
          }
          if(return_trip==false) {
              r.set_role(requestSub[requestSub.size() - 4]);
+             modality_report=requestSub[requestSub.size()-2];
+//             cout<<"modality report has been changed to => "<<modality_report<<endl;
              if(requestSub[requestSub.size() - 3]=="1"){
                  start_as_driver=true;
              }
              dest.intialize_pos(requestSub[requestSub.size() - 9],requestSub[requestSub.size() - 8],requestSub[requestSub.size() - 7],stoi(requestSub[requestSub.size() - 6]),stoi((requestSub[requestSub.size() - 5])));
          }else{
              r.set_role(requestSub[requestSub.size()-8]);
+             modality_report=requestSub[requestSub.size()-6];
+//             cout<<"modality report has been changed to => "<<modality_report<<endl;
              if(requestSub[requestSub.size() - 7]=="1"){
                  start_as_driver=true;
              }
@@ -136,7 +148,7 @@ void validateRequestTw(ODMatrix od){
          }
 //         dest.print_pos();
 //    cout<<"start as a driver isssssssss:"+to_string(start_as_driver);
-         for(int i=6;i<requestSub.size()-9;i=i+5){
+         for(int i=7;i<requestSub.size()-9;i=i+5){
              if(requestSub[i]!=dest.get_position_name()){
                  via.push_back(Position(requestSub[i],requestSub[i+1],requestSub[i+2],stoi(requestSub[i+3]),stoi(requestSub[i+4])));
              }
@@ -158,14 +170,15 @@ void validateRequestTw(ODMatrix od){
 //            std::cout << t.first << " "
 //                      << t.second << "\n";
 
-        for(int i=1; i<requestSub.size(); i+=5){
+        for(int i=2; i<requestSub.size(); i+=5){
 //            cout<<"curr string at "<<i<< " => "<< requestSub[i]<<endl;
             if(i+5 < requestSub.size()){
                 if(dict.find(requestSub[i+5]) != dict.end()){
 //                    cout<<requestSub[i+5]<< " found "<<endl;
+//                   cout<<"line 166";
                     mati = dict.at(requestSub[i]);
                     matj = dict.at(requestSub[i+5]);
-
+//                    cout<<"line 169";
                     string t1min = requestSub[i+1];
                     string t1max = requestSub[i+2];
                     string t2min = requestSub[i+6];
@@ -223,6 +236,9 @@ void validateRequestTw(ODMatrix od){
 
 
  }
+ string get_mr(){
+        return modality_report;
+    }
 
 
 };
