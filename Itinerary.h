@@ -111,13 +111,18 @@ public:
     bool combine(Itinerary it,vector<Request> request_demand_list){
         bool can_change_veh=false;
         for(Request k:request_demand_list){
+//            cout<<"value of k here "<<k.request_no<<endl;
 
             for(int request_id: requests_satisfied){
+//                cout<<"value of req satisfied here "<<request_id<<endl;
                 if(k.request_no==request_id){
+//                    cout<<"match bho "<<endl;
                     if(k.modality_report==">1"){
                         can_change_veh=true;
+                        cout<<"true"<<endl;
                     }
                     else{
+                        cout<<"false"<<endl;
                         can_change_veh=false;
                         goto label;
                     }
@@ -126,7 +131,18 @@ public:
 
         }
         label:
+
+        for(int request_id: requests_satisfied){
+            for(int request_id2:it.requests_satisfied){
+                if(request_id==request_id2){
+                    can_change_veh=false;
+                }
+            }
+        }
         cout<<"This req modality report is:"<<can_change_veh<<endl;
+        if(can_change_veh==true){
+
+        }
 
     }
 

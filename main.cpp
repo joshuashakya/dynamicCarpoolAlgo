@@ -173,22 +173,18 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
       for(int i=0; i<all_its.size(); i++){
           for(int j=0; j<all_its.size();j++){
 //              cout<<"id i "<<all_its[i].getID()<<endl;
-//              cout<<" id j "<<all_its[j].getID()<<endl;
               if(all_its[j].getID()!=all_its[i].getID()){
-                  all_its[j].combine(all_its[i],request_demand_validated);
+//              cout<<" id j "<<all_its[j].getID()<<endl;
+                  all_its[i].combine(all_its[j],request_demand_validated);
 
+                  cout<<"\n\n"<<endl;
               }
           }
-
       }
-
-
 
 }
 int main() {
     ODMatrix od;
-
-
 
     string FILENAME = "../requests.txt";
 
