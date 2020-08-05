@@ -108,7 +108,10 @@ public:
         }
     }
 
-    bool combine(Itinerary it,vector<Request> request_demand_list){
+    bool can_combine(Itinerary it,vector<Request> request_demand_list,ODMatrix od){
+        map<string, int> dict = od.getDict();
+        vector<vector<array <float, 2>>> matrix = od.getOD();
+
         bool can_change_veh=false;
         for(Request k:request_demand_list){
 //            cout<<"value of k here "<<k.request_no<<endl;
@@ -139,8 +142,53 @@ public:
                 }
             }
         }
-        cout<<"This req modality report is:"<<can_change_veh<<endl;
+
         if(can_change_veh==true){
+            vector<ItinPoints> testIt;
+            Position previous;
+            int count_of_people;
+            for(int i=0;i<it.itinpts.size();i++){
+                for(int j=0;j<itinpts.size();j++){
+                    if(dict.at(it.itinpts[i].pos.name)<dict.at(itinpts[j].pos.name)){
+
+                        cout<<previous.name;
+                        cout<<"Number of people"<<count_of_people;
+//                        if(previous.name!=(it.itinpts[i].pos.name)) {
+                            if (getTime(previous.time_at_least) < getTime(it.itinpts[i].pos.time_at_least) &&
+                                getTime(previous.time_at_most) < getTime(it.itinpts[i].pos.time_at_most) &&
+                                getTime(it.itinpts[i].pos.time_at_least) <getTime(itinpts[j].pos.time_at_least) &&
+                                getTime(it.itinpts[i].pos.time_at_most) < getTime(itinpts[j].pos.time_at_most)&& count_of_people<it.itinpts[i].av_seats) {
+                                can_change_veh = true;
+                            } else {
+                                can_change_veh = false;
+
+                            }
+//                        }
+
+                    }else{
+                         previous=itinpts[j].pos;
+                    }
+
+                    count_of_people=count_of_people+itinpts[j].pos.pickup+itinpts[j].pos.delivery;
+                }
+
+            }
+        }
+        cout<<"This req modality report is:"<<can_change_veh<<endl;
+
+        return can_change_veh;
+
+    }
+
+    Itinerary combine(Itinerary i1,Itinerary i2){
+
+        Itinerary new_itinerary;
+        for(int i=0;i<i1.itinpts.size();i++){
+            new_itinerary.itinpts.push_back(i1.itinpts[i]);
+
+        }
+        for(int i=0;i<i1.itinpts.size();i++){
+            new_itinerary.itinpts.push_back(i1.itinpts[i]);
 
         }
 

@@ -60,13 +60,13 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
 
             itinID++;
             itin_no=itin_no+1;
-            ItinPoints ip_start(i.start,3,0);
+            ItinPoints ip_start(i.start,10,0);
             new_it.addPoint(ip_start);
             for(int j=0;j<i.via.size();j++){
                 new_it.addPoint(ItinPoints(i.via[j],4,0));
 
             }
-            ItinPoints ip_dest(i.dest,0,0);
+            ItinPoints ip_dest(i.dest,10,0);
             new_it.addPoint(ip_dest);
 //            itin_no=itin_no+1;
 //            new_it.setItineraryNumber(itin_no);
@@ -111,35 +111,26 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
                     ItinPoints ip1(k.dest, 10, 0);
                     itin.push_back(ip1);
 
-//                    cout<<"before sort "<<endl;
 
-//                    for(auto & x : itin){
-////                        cout<<x.pos.name<<endl;
-//                    }
 
                     itin = sortAscending(itin, dict);
 
-//                    cout<<"after sort"<<endl;
 
                     Itinerary new_it2;
 
                     itinID++;
                     for(auto & x : itin){
                         new_it2.addPoint(x);
-//                        cout<<x.pos.name<<endl;
+
                     }
 
-//                    cout<<"new itin"<<endl;
+
                     new_it2.print_itin();
                     new_it2.requests_satisfied.push_back(i.request_no);
                     new_it2.requests_satisfied.push_back(k.request_no);
                     new_it2.showSatisfiedRequests();
-
-//                    itin_no=itin_no+1;
-//                    cout<<"Itinerary_number"<<new_it2.itineraryId;
-//                    new_it2.setItineraryNumber(itin_no);
                     all_its.push_back(new_it2);
-//                    cout<<endl;
+
 
                 }
 
@@ -151,9 +142,7 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
 
         }
 
-//        cout<<"after validation => "<<i.validated<<endl;
-//        cout<<endl;
-//        i.r.print_role();
+
     }
 
 
@@ -175,7 +164,10 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
 //              cout<<"id i "<<all_its[i].getID()<<endl;
               if(all_its[j].getID()!=all_its[i].getID()){
 //              cout<<" id j "<<all_its[j].getID()<<endl;
-                  all_its[i].combine(all_its[j],request_demand_validated);
+                  if(all_its[i].can_combine(all_its[j],request_demand_validated,od)==true){
+//                      all_its[i].combine(all_its[i],all)
+
+                  }
 
                   cout<<"\n\n"<<endl;
               }

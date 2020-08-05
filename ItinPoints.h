@@ -32,6 +32,9 @@ public:
         pos.print_pos();
         cout<<","+to_string(av_seats)+","+to_string(req_no);
     }
+    Position get_position(){
+        return pos;
+    }
 
 
 };
