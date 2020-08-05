@@ -108,12 +108,8 @@ public:
         }
     }
 
-<<<<<<< HEAD
-    bool can_combine(Itinerary it,vector<Request> request_demand_list,ODMatrix od){
-        map<string, int> dict = od.getDict();
-        vector<vector<array <float, 2>>> matrix = od.getOD();
 
-=======
+
     string converMinToTime(float timeInMin){
         int hr = (int) timeInMin/60;
         int min = (int) timeInMin%60;
@@ -165,8 +161,10 @@ public:
         }
     }
 
-    bool combine(Itinerary it,vector<Request> request_demand_list){
->>>>>>> df46aeed0bb0ab357ab6c58e560d3507810b0392
+    bool can_combine(Itinerary it,vector<Request> request_demand_list,ODMatrix od){
+        map<string, int> dict = od.getDict();
+        vector<vector<array <float, 2>>> matrix = od.getOD();
+
         bool can_change_veh=false;
         for(Request k:request_demand_list){
 //            cout<<"value of k here "<<k.request_no<<endl;
