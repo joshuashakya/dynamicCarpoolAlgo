@@ -166,21 +166,39 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
     for(int i=0; i<all_its.size(); i++){
         all_its[i].validateTimeWindow(dict, od);
     }
-
+    vector<Itinerary> combIts;
+    vector<ItinPoints> combItPnts;
       for(int i=0; i<all_its.size(); i++){
           for(int j=0; j<all_its.size();j++){
 //              cout<<"id i "<<all_its[i].getID()<<endl;
               if(all_its[j].getID()!=all_its[i].getID()){
+
 //              cout<<" id j "<<all_its[j].getID()<<endl;
                   if(all_its[i].can_combine(all_its[j],request_demand_validated,od)==true){
-//                      all_its[i].combine(all_its[i],all)
-
+                      cout<<"here";
+                      Itinerary combined_it=all_its[i].combine(all_its[i],all_its[j],od);
+                      combIts.push_back(combined_it);
                   }
 
                   cout<<"\n\n"<<endl;
               }
           }
       }
+      if(combIts.size()!=0){
+          for(int i=0;i<combIts.size();i++){
+              all_its.push_back(combIts[i]);
+          }
+
+      }
+
+    cout<<"list of itin"<<endl;
+    for(Itinerary iit:all_its){
+        iit.print_itin();
+        cout<<endl;
+        cout<<endl;
+//        iit.showSatisfiedRequests();
+    }
+//
 
 }
 int main() {

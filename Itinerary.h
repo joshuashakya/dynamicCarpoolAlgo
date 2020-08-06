@@ -7,6 +7,7 @@
 
 
 #include <vector>
+#include <algorithm>
 
 #include "ItinPoints.h"
 #include "Request.h"
@@ -227,23 +228,43 @@ public:
 
             }
         }
-        cout<<"This req modality report is:"<<can_change_veh<<endl;
+//        cout<<"This req modality report is:"<<can_change_veh<<endl;
 
         return can_change_veh;
 
     }
+    vector<ItinPoints> sortAscending(vector<ItinPoints> itin,  map<string, int> dict){
+        sort( itin.begin( ), itin.end( ), [dict]( auto& lhs, auto& rhs )
+        {
+            return  dict.at(lhs.pos.name)< dict.at(rhs.pos.name);
+        });
 
-    Itinerary combine(Itinerary i1,Itinerary i2){
+        return itin;
+    }
+
+     Itinerary combine(Itinerary i1,Itinerary i2,ODMatrix od){
+         map<string, int> dict = od.getDict();
+         vector<vector<array <float, 2>>> matrix = od.getOD();
+
+//        cout<<"i2 size is "<<i2.itinpts.size();
+        vector<ItinPoints> vecPoints;
 
         Itinerary new_itinerary;
         for(int i=0;i<i1.itinpts.size();i++){
-            new_itinerary.itinpts.push_back(i1.itinpts[i]);
+            vecPoints.push_back(i1.itinpts[i]);
 
         }
-        for(int i=0;i<i1.itinpts.size();i++){
-            new_itinerary.itinpts.push_back(i1.itinpts[i]);
+        for(int i=0;i<i2.itinpts.size();i++){
+            vecPoints.push_back(i2.itinpts[i]);
 
         }
+        vecPoints=sortAscending(vecPoints,dict);
+        for(int i=0;i<vecPoints.size();i++){
+            new_itinerary.addPoint(vecPoints[i]);
+        }
+
+        return new_itinerary;
+
 
     }
 
