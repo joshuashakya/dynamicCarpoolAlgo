@@ -23,8 +23,23 @@ public:
     std::vector<ItinPoints> itinpts;
     int satisfied_requests;
     vector<int> requests_satisfied;
+    vector<ItinPoints> returnTrip;
 
     Itinerary():uid(newUID++){
+
+    }
+ Itinerary(Itinerary const &it2) : uid(newUID++) {
+        for(int i=0;i<it2.itinpts.size();i++){
+            itinpts.push_back(it2.itinpts[i]);
+        }
+
+        for(int i=0; i<it2.returnTrip.size();i++){
+            returnTrip.push_back(it2.returnTrip[i]);
+        }
+
+        for(int i=0;i<it2.requests_satisfied.size();i++){
+            requests_satisfied.push_back(it2.requests_satisfied[i]);
+        }
 
     }
 
@@ -35,12 +50,22 @@ public:
 //            itinpts.push_back(it_copy.itinpts[i]);
 //        }
 //    }
+
     void addPoint(ItinPoints ip){
         itinpts.push_back(ip);
     }
+
     void print_itin(){
         for(int i=0;i<itinpts.size();i++){
             itinpts[i].print_itpts();
+        }
+        cout<<endl;
+//        cout<<"Return trip size is ->"<<returnTrip.size()<<endl;
+        if(returnTrip.size()!=0){
+            cout<<"Return trip->";
+            for(int i=0;i<returnTrip.size();i++){
+                returnTrip[i].print_itpts();
+            }
         }
 //        cout<<"id is "<<itineraryId<<endl;
 
@@ -267,6 +292,112 @@ public:
 
 
     }
+    Request getRequestFromId(int id, vector<Request> request_demand_list){
+        for(Request r:request_demand_list){
+            if(r.request_no==id){
+                return r;
+            }
+        }
+
+    }
+
+    bool ret_trip_poss(Itinerary it,vector<Request> request_demand_validated,ODMatrix od){
+        map<string, int> dict = od.getDict();
+        vector<vector<array <float, 2>>> matrix = od.getOD();
+    bool return_trip=false;
+        int total_person=0;
+        Position st_pos;
+        Position dest_pos;
+    for(int i:requests_satisfied){
+        total_person=0;
+        if(getRequestFromId(i,request_demand_validated).return_trip==true){
+            return_trip=true;
+            st_pos=(getRequestFromId(i,request_demand_validated)).dest;
+            dest_pos=(getRequestFromId(i,request_demand_validated)).start;
+
+
+
+        }
+    }
+    if (return_trip==true){
+        cout<<"Pritinging"<<endl;
+
+        cout<<st_pos.name;
+        cout<<it.itinpts[0].pos.name;
+        cout<<endl;
+
+        cout<<dest_pos.name<<endl;
+        cout<<it.itinpts[it.itinpts.size()-1].pos.name<<endl;
+
+        if(dict.at(st_pos.name)<=dict.at(it.itinpts[0].pos.name) && dict.at(dest_pos.name)>=dict.at(it.itinpts[it.itinpts.size()-1].pos.name)){
+
+            return_trip=true;
+        }
+        else{
+            return_trip=false;
+        }
+
+    }
+
+
+    cout<<"The return trip is "<<return_trip<<endl;
+
+    return return_trip;
+
+
+    }
+    void addToReturnTrip(vector<ItinPoints> itpts){
+        for(int i=0;i<itpts.size();i++){
+//            cout<<"added to return trip"<<endl;
+            returnTrip.push_back(itpts[i]);
+        }
+    }
+
+    int getReturnSize(){
+        return returnTrip.size();
+    }
+
+    Itinerary createReturnTrip(Itinerary it, vector<Request> request_demand_validated){
+        Itinerary new_it(*this);
+        Position st_pos;
+        Position dest_pos;
+        for(int i:requests_satisfied){
+            if(getRequestFromId(i,request_demand_validated).return_trip==true){
+                st_pos=(getRequestFromId(i,request_demand_validated)).dest;
+                dest_pos=(getRequestFromId(i,request_demand_validated)).start;
+
+            }
+        }
+
+//        new_it.addToReturnTrip(it.itinpts);
+
+        for(int i=0;i<it.itinpts.size();i++){
+//            cout<<"added to return trip"<<endl;
+            new_it.returnTrip.push_back(it.itinpts[i]);
+        }
+
+
+        bool start_pos_bool=false;
+        bool dest_pos_bool=false;
+        for(int i=0;i<new_it.returnTrip.size();i++){
+            if(new_it.returnTrip[i].pos.name==dest_pos.name){
+                dest_pos_bool=true;
+            }
+            if(new_it.returnTrip[i].pos.name==dest_pos.name){
+                start_pos_bool=true;
+            }
+
+        }
+        if(start_pos_bool!=true){
+            new_it.returnTrip.push_back(ItinPoints(st_pos,0,0));
+        }
+        if(dest_pos_bool!=true){
+            new_it.returnTrip.push_back(ItinPoints(dest_pos,0,0));
+        }
+
+        return new_it;
+    }
+
 
 
 };

@@ -29,6 +29,7 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
 
     map<string, int> dict = od.getDict();
     vector<Itinerary > all_its;
+    vector<Itinerary> return_trip_its;
     vector<Request> request_demand_only;
     vector<Request> request_demand_validated;
     vector<Request> offers_to_combine;
@@ -177,19 +178,53 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
                   if(all_its[i].can_combine(all_its[j],request_demand_validated,od)==true){
                       cout<<"here";
                       Itinerary combined_it=all_its[i].combine(all_its[i],all_its[j],od);
+                      for(int a:all_its[i].requests_satisfied){
+                          combined_it.requests_satisfied.push_back(a);
+                      }
+                      for(int b:all_its[j].requests_satisfied){
+                          combined_it.requests_satisfied.push_back(b);
+                      }
                       combIts.push_back(combined_it);
+
                   }
 
                   cout<<"\n\n"<<endl;
               }
           }
       }
+
       if(combIts.size()!=0){
           for(int i=0;i<combIts.size();i++){
               all_its.push_back(combIts[i]);
           }
 
       }
+
+//    vector<Itinerary> return_trip_its;
+    for(int i=0; i<all_its.size(); i++){
+        for(int j=0; j<all_its.size();j++){
+//              cout<<"id i "<<all_its[i].getID()<<endl;
+            if(all_its[j].getID()!=all_its[i].getID()){
+
+                if(all_its[i].ret_trip_poss(all_its[j],request_demand_validated,od)==true){
+
+
+                    Itinerary return_trip_it=all_its[i].createReturnTrip(all_its[j],request_demand_validated);
+                    cout<<"size of returned trip -> "<<return_trip_it.getReturnSize()<<endl;
+//                    return_trip_its.push_back(return_trip_it);
+                    return_trip_its.push_back(Itinerary(return_trip_it));
+                    cout<<"size of ret trip vector -> "<<return_trip_its.back().getReturnSize()<<endl;
+
+                }
+
+                cout<<"\n\n"<<endl;
+            }
+        }
+    }
+    for(int i=0;i<return_trip_its.size();i++){
+//        cout<<"adding to all its with return trip size ->"<<return_trip_its[i].returnTrip.size()<<endl;
+        all_its.push_back(return_trip_its[i]);
+    }
 
     cout<<"list of itin"<<endl;
     for(Itinerary iit:all_its){
