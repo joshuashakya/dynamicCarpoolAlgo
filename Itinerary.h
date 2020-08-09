@@ -141,7 +141,11 @@ public:
     string converMinToTime(float timeInMin){
         int hr = (int) timeInMin/60;
         int min = (int) timeInMin%60;
-        string time = to_string(hr)+":"+to_string(min);
+        string hour = to_string(hr);
+        string minute = to_string(min);
+        if(minute.length() == 1)
+            minute = "0"+minute;
+        string time = hour+":"+minute;
 
         return time;
     }
