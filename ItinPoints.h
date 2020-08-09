@@ -21,7 +21,6 @@ public:
         pos=p;
         av_seats=as;
         req_no=r_no;
-
     }
     void set_new_point(Position p,int as, int r_no){
         pos=p;

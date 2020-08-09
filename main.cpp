@@ -63,6 +63,8 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
 
             itinID++;
             itin_no=itin_no+1;
+            cout<<"Priting position"<<endl;
+
             ItinPoints ip_start(i.start,10,0);
             new_it.addPoint(ip_start);
             for(int j=0;j<i.via.size();j++){
@@ -73,6 +75,8 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
             new_it.addPoint(ip_dest);
 //            itin_no=itin_no+1;
 //            new_it.setItineraryNumber(itin_no);
+
+
             new_it.print_itin();
 
 //            cout<<new_it.itinerary_no;
@@ -152,7 +156,7 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
 
 
 //    for(Itinerary it:all_its){
-        cout<<"list of itin"<<endl;
+        cout<<"\n\n\nlist of itin"<<endl;
         for(Itinerary iit:all_its){
            iit.print_itin();
            cout<<endl;
@@ -164,9 +168,10 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
 //        }
 //    }
 
-    for(int i=0; i<all_its.size(); i++){
-        all_its[i].validateTimeWindow(dict, od);
-    }
+//    for(int i=0; i<all_its.size(); i++){
+//        all_its[i].validateTimeWindow(dict, od);
+//    }
+
     vector<Itinerary> combIts;
     vector<ItinPoints> combItPnts;
       for(int i=0; i<all_its.size(); i++){
@@ -226,13 +231,29 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
         all_its.push_back(return_trip_its[i]);
     }
 
-    cout<<"list of itin"<<endl;
+    cout<<"list of itin before valid"<<endl;
     for(Itinerary iit:all_its){
         iit.print_itin();
         cout<<endl;
-        cout<<endl;
+
 //        iit.showSatisfiedRequests();
     }
+
+
+    cout<<endl;
+    cout<<endl;
+    cout<<endl;
+
+    cout<<"list of itin after valid"<<endl;
+    for(Itinerary iit:all_its){
+        iit.validateTimeWindow(dict, od);
+
+        iit.print_itin();
+        cout<<endl;
+
+//        iit.showSatisfiedRequests();
+    }
+
 //
 
 }

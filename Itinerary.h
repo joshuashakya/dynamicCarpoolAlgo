@@ -56,6 +56,8 @@ public:
     }
 
     void print_itin(){
+
+
         for(int i=0;i<itinpts.size();i++){
             itinpts[i].print_itpts();
         }
@@ -144,7 +146,7 @@ public:
         return time;
     }
 
-    void validateTimeWindow(map<string, int> dict, ODMatrix od) {
+    void validateTimeWindow2(map<string, int> dict, ODMatrix od) {
         vector<vector<array <float ,2>>> matrix = od.getOD();
 
         for(int i=0; i<itinpts.size(); i++){
@@ -181,6 +183,41 @@ public:
 
                     p0min = p0min + matrix[i0][i0].at(0);
                     itinpts[i].pos.time_at_least = converMinToTime(p0min);
+                }
+
+            }
+        }
+    }
+
+    void validateTimeWindow(map<string, int> dict, ODMatrix od){
+        vector<vector<array <float ,2>>> matrix = od.getOD();
+
+        for(int i=0; i<itinpts.size(); i++){
+            if(i+1 < itinpts.size()){
+                int i0 = dict.at(itinpts[i].pos.name);
+                int j0 = dict.at(itinpts[i+1].pos.name);
+
+                string t0min = itinpts[i].pos.time_at_least;
+                string t0max = itinpts[i].pos.time_at_most;
+                string t1min = itinpts[i+1].pos.time_at_least;
+                string t1max = itinpts[i+1].pos.time_at_most;
+
+                float p0min = getTime(t0min);
+                float p0max = getTime(t0max);
+                float p1min = getTime(t1min);
+                float p1max = getTime(t1max);
+
+                float min = p1min - p0min;
+                float max = p1max - p0max;
+
+                if(min < matrix[i0][j0].at(0)){
+                    p1min = p0min + matrix[i0][j0].at(0);
+                    itinpts[i+1].pos.time_at_least = converMinToTime(p1min);
+                }
+
+                if(max < matrix[i0][j0].at(0)){
+                    p1max = p0max + matrix[i0][j0].at(0);
+                    itinpts[i+1].pos.time_at_most = converMinToTime(p1max);
                 }
 
             }
@@ -225,7 +262,7 @@ public:
         if(can_change_veh==true){
             vector<ItinPoints> testIt;
             Position previous;
-            int count_of_people;
+            int count_of_people=0;
             for(int i=0;i<it.itinpts.size();i++){
                 for(int j=0;j<itinpts.size();j++){
                     if(dict.at(it.itinpts[i].pos.name)<dict.at(itinpts[j].pos.name)){
