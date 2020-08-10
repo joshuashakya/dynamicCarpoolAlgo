@@ -18,17 +18,20 @@
 class Itinerary {
 private:
     static int newUID;
-    const int uid;
+//    const int uid;
 public:
     std::vector<ItinPoints> itinpts;
     int satisfied_requests;
     vector<int> requests_satisfied;
     vector<ItinPoints> returnTrip;
 
-    Itinerary():uid(newUID++){
+    Itinerary(){
 
     }
- Itinerary(Itinerary const &it2) : uid(newUID++) {
+
+    
+
+ Itinerary(Itinerary const &it2)  {
         for(int i=0;i<it2.itinpts.size();i++){
             itinpts.push_back(it2.itinpts[i]);
         }
@@ -42,6 +45,21 @@ public:
         }
 
     }
+    bool operator>(const Itinerary r) const
+    {
+//        if (requests_satisfied.size() != r.requests_satisfied.size())
+            return requests_satisfied.size() >= r.requests_satisfied.size();
+
+//        return requests_satisfied.size() > r.requests_satisfied.size();
+    }
+
+//    bool operator==(const Itinerary& r) const
+//    {
+//        if (requests_satisfied.size() != r.requests_satisfied.size())
+//            return requests_satisfied.size() > r.requests_satisfied.size();
+//
+//        return requests_satisfied.size() > r.requests_satisfied.size();
+//    }
 
 
 //    Itinerary(Itinerary const &it_copy){
@@ -68,14 +86,23 @@ public:
             for(int i=0;i<returnTrip.size();i++){
                 returnTrip[i].print_itpts();
             }
+            cout<<endl;
         }
+
 //        cout<<"id is "<<itineraryId<<endl;
 
+    }
+    bool operator< (const Itinerary &other) const {
+        return requests_satisfied.size() < other.requests_satisfied.size();
     }
 //    void setItineraryNumber(int no){
 //        itinerary_no=no;
 //    }
 
+     int getRequestsSatisfied(){
+        int i=requests_satisfied.size();
+        return i;
+    }
     float getTime(string stime){
         string h = stime.substr(0, stime.find(":"));
         stime.erase(0,  h.length()+1);
@@ -85,9 +112,9 @@ public:
         return time;
     }
 
-    int getID(){
-        return uid;
-    }
+//    int getID(){
+//        return uid;
+//    }
 
     bool satisfies(Request r, ODMatrix od){
 
@@ -436,6 +463,12 @@ public:
             new_it.returnTrip.push_back(ItinPoints(dest_pos,0,0));
         }
 
+        for(int i=0;i<requests_satisfied.size();i++){
+            new_it.requests_satisfied.push_back(requests_satisfied[i]);
+        }
+        for(int i=0;i<it.requests_satisfied.size();i++){
+            new_it.requests_satisfied.push_back(it.requests_satisfied[i]);
+        }
         return new_it;
     }
 

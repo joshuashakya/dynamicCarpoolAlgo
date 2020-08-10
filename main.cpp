@@ -13,11 +13,34 @@ std::vector<Request> request_demand_list;
 vector<ItinPoints> sortAscending(vector<ItinPoints> itin,  map<string, int> dict){
     sort( itin.begin( ), itin.end( ), [dict]( auto& lhs, auto& rhs )
     {
-        return  dict.at(lhs.pos.name)< dict.at(rhs.pos.name);
+        return  dict.at(lhs.pos.name) < dict.at(rhs.pos.name);
     });
 
     return itin;
 }
+
+vector<Itinerary> sortItin(vector<Itinerary> itin){
+    sort( itin.begin(), itin.end(), []( Itinerary lhs, Itinerary rhs )
+    {
+        return  lhs > rhs;
+    });
+
+    return itin;
+//    vector<Itinerary> sorted;
+//    int size = itin.size();
+//
+//    for(int i=0; i<size; i++){
+//        sorted.push_back(itin[i]);
+//        for(int j=0; j<size; j++){
+//            if(itin[j].requests_satisfied.size() > sorted.back().requests_satisfied.size()){
+//                sorted.pop_back();
+//                sorted.push_back(itin[j]);
+//            }
+//        }
+//    }
+
+}
+
 
 
 void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
@@ -177,7 +200,7 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
       for(int i=0; i<all_its.size(); i++){
           for(int j=0; j<all_its.size();j++){
 //              cout<<"id i "<<all_its[i].getID()<<endl;
-              if(all_its[j].getID()!=all_its[i].getID()){
+              if(i!=j){
 
 //              cout<<" id j "<<all_its[j].getID()<<endl;
                   if(all_its[i].can_combine(all_its[j],request_demand_validated,od)==true){
@@ -209,7 +232,7 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
     for(int i=0; i<all_its.size(); i++){
         for(int j=0; j<all_its.size();j++){
 //              cout<<"id i "<<all_its[i].getID()<<endl;
-            if(all_its[j].getID()!=all_its[i].getID()){
+            if(i!=j){
 
                 if(all_its[i].ret_trip_poss(all_its[j],request_demand_validated,od)==true){
 
@@ -253,6 +276,15 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
 
 //        iit.showSatisfiedRequests();
     }
+
+
+    std::sort(all_its.begin(), all_its.end(), greater <>());
+    cout<<endl<<endl<<"Sorted itinerary"<<endl;
+    for(Itinerary iit:all_its){
+        iit.print_itin();
+        cout<<endl;
+    }
+
 
 //
 

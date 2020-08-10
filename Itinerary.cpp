@@ -4,4 +4,3 @@
 
 #include "Itinerary.h"
 
-int Itinerary::newUID = 0;
