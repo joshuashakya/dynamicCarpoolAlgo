@@ -270,17 +270,33 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
     cout<<"list of itin after valid"<<endl;
     for(Itinerary iit:all_its){
         iit.validateTimeWindow(dict, od);
-
         iit.print_itin();
         cout<<endl;
 
 //        iit.showSatisfiedRequests();
     }
 
+    int total_itineraries=all_its.size();
+    int deleted_itineraries=0;
 
     std::sort(all_its.begin(), all_its.end(), greater <>());
-    cout<<endl<<endl<<"Sorted itinerary"<<endl;
+
+  cout<<"Itineraries no request done"<<endl;
+    for(int i=0;i<all_its.size();i++){
+
+        if(all_its[i].requests_satisfied.size()<=1){
+            deleted_itineraries=total_itineraries-i;
+            all_its.erase(all_its.begin()+i,all_its.end());
+            break;
+//
+        }
+    }
+    cout<<endl<<"The total itineraies were "<<total_itineraries<<endl;
+    cout<<endl<<"the deleted itineraries were"<<deleted_itineraries<<endl;
+
+    cout<<"List of itineraries:"<<endl;
     for(Itinerary iit:all_its){
+
         iit.print_itin();
         cout<<endl;
     }
