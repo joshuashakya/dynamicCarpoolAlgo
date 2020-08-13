@@ -3,6 +3,7 @@
 #include <fstream>
 #include <algorithm>
 #include "Organization.h"
+#include <chrono>
 #include "Request.h"
 #include "ODMatrix.h"
 
@@ -326,8 +327,12 @@ int main() {
     in.close();
     Organization o1;
 //    request_demand_list[1].validateRequestTw(od);
-
+    auto t1 = std::chrono::high_resolution_clock::now();
     CarpoolAlgorithm(request_demand_list, o1, od);
+    auto t2 = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>( t2 - t1 ).count();
+
+    std::cout << "The time of execution is " <<duration<< " milliseconds";
 
 //    request_demand_list[0].validateRequestTw(od);
 
