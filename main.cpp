@@ -280,7 +280,7 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
     int total_itineraries=all_its.size();
     int deleted_itineraries=0;
 
-    std::sort(all_its.begin(), all_its.end(), greater <>());
+    std::sort(all_its.begin(), all_its.end());
 
   cout<<"Itineraries no request done"<<endl;
     for(int i=0;i<all_its.size();i++){
