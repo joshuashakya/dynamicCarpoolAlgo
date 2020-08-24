@@ -27,6 +27,7 @@ public :
     Position dest;
     vector<Position> via;
     bool return_trip;
+    bool car_retrieval;
     vector<string> time_windows;
     bool start_as_driver;
     int capacity;
@@ -43,6 +44,8 @@ public :
         capacity=0;
         modality_report="";
         request_no=0;
+        return_trip=false;
+        car_retrieval=false;
 
     }
     void printrequest(){
@@ -123,28 +126,50 @@ void validateRequestTw(ODMatrix od){
 //         start.print_pos();
         capacity=stoi(requestSub[1]);
 
+        if(requestSub[requestSub.size()-2]=="1"){
+            car_retrieval=true;
+        }else{
+             car_retrieval=false;
+         }
+
          if(requestSub[requestSub.size()-1]=="1"){
              return_trip=true;
          }else{
              return_trip=false;
          }
          if(return_trip==false) {
-             r.set_role(requestSub[requestSub.size() - 4]);
-             modality_report=requestSub[requestSub.size()-2];
+             if(car_retrieval==false) {
+                 r.set_role(requestSub[requestSub.size() - 5]);
+                 modality_report = requestSub[requestSub.size() - 3];
 //             cout<<"modality report has been changed to => "<<modality_report<<endl;
-             if(requestSub[requestSub.size() - 3]=="1"){
-                 start_as_driver=true;
+                 if (requestSub[requestSub.size() - 4] == "1") {
+                     start_as_driver = true;
+                 }
+                 dest.intialize_pos(requestSub[requestSub.size() - 10], requestSub[requestSub.size() - 9],
+                                    requestSub[requestSub.size() - 8], stoi(requestSub[requestSub.size() - 7]),
+                                    stoi((requestSub[requestSub.size() - 6])));
              }
-             dest.intialize_pos(requestSub[requestSub.size() - 9],requestSub[requestSub.size() - 8],requestSub[requestSub.size() - 7],stoi(requestSub[requestSub.size() - 6]),stoi((requestSub[requestSub.size() - 5])));
-         }else{
-             r.set_role(requestSub[requestSub.size()-8]);
-             modality_report=requestSub[requestSub.size()-6];
+             else{
+                 r.set_role(requestSub[requestSub.size()-9]);
+                 modality_report=requestSub[requestSub.size()-7];
 //             cout<<"modality report has been changed to => "<<modality_report<<endl;
-             if(requestSub[requestSub.size() - 7]=="1"){
+                 if(requestSub[requestSub.size() - 8]=="1"){
+                     start_as_driver=true;
+                 }
+
+                 dest.intialize_pos(requestSub[requestSub.size() - 14],requestSub[requestSub.size() - 13],requestSub[requestSub.size() - 12],stoi(requestSub[requestSub.size() - 11]),stoi(requestSub[requestSub.size() - 10]));
+
+
+             }
+             }else{
+             r.set_role(requestSub[requestSub.size()-9]);
+             modality_report=requestSub[requestSub.size()-7];
+//             cout<<"modality report has been changed to => "<<modality_report<<endl;
+             if(requestSub[requestSub.size() - 8]=="1"){
                  start_as_driver=true;
              }
 
-             dest.intialize_pos(requestSub[requestSub.size() - 13],requestSub[requestSub.size() - 12],requestSub[requestSub.size() - 11],stoi(requestSub[requestSub.size() - 10]),stoi(requestSub[requestSub.size() - 9]));
+             dest.intialize_pos(requestSub[requestSub.size() - 14],requestSub[requestSub.size() - 13],requestSub[requestSub.size() - 12],stoi(requestSub[requestSub.size() - 11]),stoi(requestSub[requestSub.size() - 10]));
          }
 //         dest.print_pos();
 //    cout<<"start as a driver isssssssss:"+to_string(start_as_driver);

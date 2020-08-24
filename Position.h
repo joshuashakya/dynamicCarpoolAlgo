@@ -9,13 +9,17 @@
 using namespace std;
 class Position {
 public:
-    string name;
+    string name="";
     string time_at_least;
     string time_at_most;
     int pickup;
     int delivery;
     Position(){
-
+        name="";
+        time_at_least="";
+        time_at_most="";
+        pickup=0;
+        delivery=0;
     }
     Position(string n,string t1,string t2,int pu,int del){
         name=n;

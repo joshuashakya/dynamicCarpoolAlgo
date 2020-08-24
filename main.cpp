@@ -54,6 +54,7 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
     map<string, int> dict = od.getDict();
     vector<Itinerary > all_its;
     vector<Itinerary> return_trip_its;
+    vector<Itinerary> retrieval_trip_its;
     vector<Request> request_demand_only;
     vector<Request> request_demand_validated;
     vector<Request> offers_to_combine;
@@ -206,14 +207,17 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
 //              cout<<" id j "<<all_its[j].getID()<<endl;
                   if(all_its[i].can_combine(all_its[j],request_demand_validated,od)==true){
                       cout<<"here";
-                      Itinerary combined_it=all_its[i].combine(all_its[i],all_its[j],od);
+                      Itinerary combined_it= all_its[i].combine(all_its[i],all_its[j],od);
+
+                      cout<<"\n\n\nCOMB IT RECEIVED NOW => "<<combined_it.modality_change_point.name <<endl;
+
                       for(int a:all_its[i].requests_satisfied){
                           combined_it.requests_satisfied.push_back(a);
                       }
                       for(int b:all_its[j].requests_satisfied){
                           combined_it.requests_satisfied.push_back(b);
                       }
-                      combIts.push_back(combined_it);
+                      combIts.push_back(Itinerary(combined_it));
 
                   }
 
@@ -224,7 +228,7 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
 
       if(combIts.size()!=0){
           for(int i=0;i<combIts.size();i++){
-              all_its.push_back(combIts[i]);
+              all_its.push_back(Itinerary(combIts[i]));
           }
 
       }
@@ -255,6 +259,36 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
         all_its.push_back(return_trip_its[i]);
     }
 
+
+
+    for(int i=0; i<all_its.size(); i++){
+
+        for(int j=0; j<all_its.size();j++){
+//              cout<<"id i "<<all_its[i].getID()<<endl;
+            if(i!=j){
+
+
+                if(all_its[i].retrieval_trip_poss(all_its[j],request_demand_validated,od)==true){
+
+
+
+                    Itinerary retrieval_trip_it=all_its[i].createRetrievalTrip(all_its[j],request_demand_validated);
+//                    cout<<"size of returned trip -> "<<return_trip_it.getReturnSize()<<endl;
+//                    return_trip_its.push_back(return_trip_it);
+                    retrieval_trip_its.push_back(Itinerary(retrieval_trip_it));
+//                    cout<<"size of ret trip vector -> "<<return_trip_its.back().getReturnSize()<<endl;
+
+                }
+
+                cout<<"\n\n"<<endl;
+            }
+        }
+    }
+    for(int i=0;i<retrieval_trip_its.size();i++){
+//        cout<<"adding to all its with return trip size ->"<<return_trip_its[i].returnTrip.size()<<endl;
+        all_its.push_back(retrieval_trip_its[i]);
+    }
+
     cout<<"list of itin before valid"<<endl;
     for(Itinerary iit:all_its){
         iit.print_itin();
@@ -280,7 +314,7 @@ void CarpoolAlgorithm(vector<Request> r, Organization o1,ODMatrix od){
     int total_itineraries=all_its.size();
     int deleted_itineraries=0;
 
-    std::sort(all_its.begin(), all_its.end());
+    std::sort(all_its.begin(), all_its.end(),greater<>());
 
   cout<<"Itineraries no request done"<<endl;
     for(int i=0;i<all_its.size();i++){

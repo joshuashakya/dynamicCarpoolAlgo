@@ -24,6 +24,8 @@ public:
     int satisfied_requests;
     vector<int> requests_satisfied;
     vector<ItinPoints> returnTrip;
+    vector<ItinPoints> retrievalTrip;
+    Position modality_change_point;
 
     Itinerary(){
 
@@ -39,11 +41,18 @@ public:
         for(int i=0; i<it2.returnTrip.size();i++){
             returnTrip.push_back(it2.returnTrip[i]);
         }
+     for(int i=0; i<it2.retrievalTrip.size();i++){
+         retrievalTrip.push_back(it2.retrievalTrip[i]);
+     }
 
         for(int i=0;i<it2.requests_satisfied.size();i++){
             requests_satisfied.push_back(it2.requests_satisfied[i]);
         }
 
+        modality_change_point = it2.modality_change_point;
+    }
+    void setModalityChangePnt(Position p){
+        modality_change_point.intialize_pos(p.name,p.time_at_least,p.time_at_most,p.pickup,p.delivery);
     }
     bool operator>(const Itinerary r) const
     {
@@ -85,6 +94,14 @@ public:
             cout<<"Return trip->";
             for(int i=0;i<returnTrip.size();i++){
                 returnTrip[i].print_itpts();
+            }
+            cout<<endl;
+        }
+        cout<<endl;
+        if(retrievalTrip.size()!=0){
+            cout<<"Retrieval trip->";
+            for(int i=0;i<retrievalTrip.size();i++){
+                retrievalTrip[i].print_itpts();
             }
             cout<<endl;
         }
@@ -355,6 +372,11 @@ public:
         for(int i=0;i<vecPoints.size();i++){
             new_itinerary.addPoint(vecPoints[i]);
         }
+        cout<<"\n\nISHAN  X X X X and modality pt => "<<new_itinerary.modality_change_point.name<<endl;
+
+        new_itinerary.setModalityChangePnt(i2.itinpts[0].pos);
+//        new_itinerary.modality_change_point=(i2.itinpts[0].pos);
+         cout<<"\n\nISHAN  Y Y Y Y and modality pt => "<<new_itinerary.modality_change_point.name<<endl;
 
         return new_itinerary;
 
@@ -388,14 +410,14 @@ public:
         }
     }
     if (return_trip==true){
-        cout<<"Pritinging"<<endl;
-
-        cout<<st_pos.name;
-        cout<<it.itinpts[0].pos.name;
-        cout<<endl;
-
-        cout<<dest_pos.name<<endl;
-        cout<<it.itinpts[it.itinpts.size()-1].pos.name<<endl;
+//        cout<<"Pritinging"<<endl;
+//
+//        cout<<st_pos.name;
+//        cout<<it.itinpts[0].pos.name;
+//        cout<<endl;
+//
+//        cout<<dest_pos.name<<endl;
+//        cout<<it.itinpts[it.itinpts.size()-1].pos.name<<endl;
 
         if(dict.at(st_pos.name)<=dict.at(it.itinpts[0].pos.name) && dict.at(dest_pos.name)>=dict.at(it.itinpts[it.itinpts.size()-1].pos.name)){
 
@@ -408,12 +430,74 @@ public:
     }
 
 
+//    cout<<"The return trip is "<<return_trip<<endl;
+
+    return return_trip;
+
+
+    }
+
+    bool retrieval_trip_poss(Itinerary it,vector<Request> request_demand_validated,ODMatrix od){
+        cout<<"Pritinign the second it"<<endl;
+        for(int i=0;i<itinpts.size();i++){
+            cout<<itinpts[i].pos.name;
+        }
+        bool return_trip = false;
+
+            map<string, int> dict = od.getDict();
+            vector<vector<array<float, 2>>> matrix = od.getOD();
+
+            int total_person = 0;
+            Position st_pos;
+            Position dest_pos;
+            for (int i:requests_satisfied) {
+                total_person = 0;
+                if (getRequestFromId(i, request_demand_validated).car_retrieval == true) {
+                    return_trip = true;
+                    st_pos = (getRequestFromId(i, request_demand_validated)).dest;
+                    dest_pos = modality_change_point;
+
+                }
+            }
+            cout<<"The destination position is "<<dest_pos.get_position_name();
+
+            if (return_trip == true) {
+
+//
+            if(dest_pos.name!=""){
+
+                cout<<"Pritintin"<<endl;
+                cout<<st_pos.name;
+                cout<<dest_pos.name;
+
+
+                if (dict.at(st_pos.name) <= dict.at(it.itinpts[0].pos.name) &&
+                    dict.at(dest_pos.name) >= dict.at(it.itinpts[it.itinpts.size() - 1].pos.name)) {
+
+                    return_trip = true;
+                } else {
+                    return_trip = false;
+                }
+
+                }
+            else{
+                return_trip=false;
+            }
+            }
+
+
+
+
     cout<<"The return trip is "<<return_trip<<endl;
 
     return return_trip;
 
 
     }
+
+
+
+
     void addToReturnTrip(vector<ItinPoints> itpts){
         for(int i=0;i<itpts.size();i++){
 //            cout<<"added to return trip"<<endl;
@@ -436,6 +520,7 @@ public:
 
             }
         }
+        dest_pos.print_pos();
 
 //        new_it.addToReturnTrip(it.itinpts);
 
@@ -472,7 +557,53 @@ public:
         return new_it;
     }
 
+    Itinerary createRetrievalTrip(Itinerary it, vector<Request> request_demand_validated){
+        Itinerary new_it(*this);
+        Position st_pos;
+        Position dest_pos;
+        for(int i:requests_satisfied){
+            if(getRequestFromId(i,request_demand_validated).car_retrieval==true){
+                st_pos=(getRequestFromId(i,request_demand_validated)).dest;
+                dest_pos=modality_change_point;
 
+            }
+        }
+        dest_pos.print_pos();
+
+//        new_it.addToReturnTrip(it.itinpts);
+
+        for(int i=0;i<it.itinpts.size();i++){
+//            cout<<"added to return trip"<<endl;
+            new_it.retrievalTrip.push_back(it.itinpts[i]);
+        }
+
+
+        bool start_pos_bool=false;
+        bool dest_pos_bool=false;
+        for(int i=0;i<new_it.retrievalTrip.size();i++){
+            if(new_it.retrievalTrip[i].pos.name==dest_pos.name){
+                dest_pos_bool=true;
+            }
+            if(new_it.retrievalTrip[i].pos.name==st_pos.name){
+                start_pos_bool=true;
+            }
+
+        }
+        if(start_pos_bool!=true){
+            new_it.retrievalTrip.push_back(ItinPoints(st_pos,0,0));
+        }
+        if(dest_pos_bool!=true){
+            new_it.retrievalTrip.push_back(ItinPoints(dest_pos,0,0));
+        }
+
+        for(int i=0;i<requests_satisfied.size();i++){
+            new_it.requests_satisfied.push_back(requests_satisfied[i]);
+        }
+        for(int i=0;i<it.requests_satisfied.size();i++){
+            new_it.requests_satisfied.push_back(it.requests_satisfied[i]);
+        }
+        return new_it;
+    }
 
 };
 
